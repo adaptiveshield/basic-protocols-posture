@@ -112,26 +112,26 @@ $def_auth_policy = $policies | Where-Object {$_.Name -eq $org_config.DefaultAuth
 $users = @()
 
 foreach ($user in $msol){
-  $pol = $null
+  $policy = $null
   $is_def = $null
   $exchange_user = $null
-  $user_pol = $null
+  $user_policy = $null
   if ($def_auth_policy){
-    $pol = $def_auth_policy
+    $policy = $def_auth_policy
     $is_def = $true 
   }
   $exchange_user = $exchange_users | Where-Object {$_.UserPrincipalName -eq $user.UserPrincipalName}
-  $user_pol = $policies | Where-Object {$_.Name -eq $exchange_user.AuthenticationPolicy}
-  if ($user_pol){
-    $pol = $user_pol
+  $user_policy = $policies | Where-Object {$_.Name -eq $exchange_user.AuthenticationPolicy}
+  if ($user_policy){
+    $policy = $user_policy
     $is_def = $false
   }
   $user_protocols = Get-DeepClone $my_protocols_hash
-  if ($pol){
+  if ($policy){
     foreach ($protocol in $user_protocols.Keys){
       $attr = $user_protocols[$protocol].attribute
-      $user_protocols[$protocol].enabled = $pol.$attr
-      if ($pol.$attr -eq $false){
+      $user_protocols[$protocol].enabled = $policy.$attr
+      if ($policy.$attr -eq $false){
         $user_protocols[$protocol].blocked_method = "Authentication Policy"
       }
     }
@@ -188,7 +188,7 @@ foreach ($user in $msol){
     has_mailbox = !!($cas_mailbox)
     blocked = $user.BlockCredential
     mfa = ($user.StrongAuthenticationMethods.Count -gt 0)
-    auth_policy = $pol.Name
+    auth_policy = $policy.Name
     is_ap_def = $is_def
     activesync = $user_protocols.activesync.enabled
     activesync_method = $user_protocols.activesync.blocked_method

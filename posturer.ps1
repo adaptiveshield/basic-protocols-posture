@@ -184,7 +184,7 @@ foreach ($user in $msol){
 
 
   $users += [pscustomobject]@{
-    email = $user.UserPrincipalName
+    user = $user.UserPrincipalName
     has_mailbox = !!($cas_mailbox)
     blocked = $user.BlockCredential
     mfa = ($user.StrongAuthenticationMethods.Count -gt 0)

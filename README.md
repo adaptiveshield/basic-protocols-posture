@@ -1,6 +1,9 @@
 # basic-protocols-posture
 A PowerShell script shows users and their legacy protocols status. Each protocols' status is being tested against Authentication Policy, Mailbox services, and Transport config.
 
+
+The script isn't optimized for large M365 accounts. Organizations need to take into consideration the compute/memory capacity the host it is running.
+
 ### Execution
 1. Download the script `posturer.ps1` and save it on the machine you use to connect PowerShell.
 2. Connect using PowerShell to your organization (with a Global reader permissions)
